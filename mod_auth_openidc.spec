@@ -25,14 +25,14 @@ make
 %install
 make install
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/httpd/modules/
-mv /usr/lib64/httpd/modules/mod_auth_openidc.so $RPM_BUILD_ROOT%{_libdir}/httpd/modules/
+mv %{_libdir}/httpd/modules/mod_auth_openidc.so $RPM_BUILD_ROOT%{_libdir}/httpd/modules/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %doc LICENSE.txt ChangeLog 
-/usr/lib64/httpd/modules/mod_auth_openidc.so
+%{_libdir}/httpd/modules/mod_auth_openidc.so
 
 %changelog
 * Sat Jul 26 2014 Hiroyuki Wada <wadahiro@gmail.com> 1.5.2-1
