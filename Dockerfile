@@ -21,7 +21,7 @@ RUN yum install --enablerepo=epel -y jansson-devel
 RUN yum install -y httpd httpd-devel curl-devel
 
 # build mod_auth_openidc rpm
-RUN curl -o $HOME/rpm/SOURCES/mod_auth_openidc-1.5.2.tar.gz https://codeload.github.com/pingidentity/mod_auth_openidc/tar.gz/v1.5.2
+RUN curl -o $HOME/rpm/SOURCES/mod_auth_openidc-1.5.4.tar.gz https://codeload.github.com/pingidentity/mod_auth_openidc/tar.gz/v1.5.4
 ADD mod_auth_openidc.spec $HOME/rpm/SPECS/mod_auth_openidc.spec
 RUN rpmbuild -bb $HOME/rpm/SPECS/mod_auth_openidc.spec
 

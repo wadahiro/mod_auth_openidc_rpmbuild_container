@@ -1,5 +1,5 @@
 Name:		mod_auth_openidc
-Version:	1.5.2
+Version:	1.5.4
 Release:	1%{?dist}
 Summary:	Authentication/Authorization module for the Apache 2.x HTTP server that allows users to authenticate using an OpenID Connect enabled Identity Provider
 
@@ -19,7 +19,7 @@ This module enables an Apache 2.x web server to operate as an OpenID Connect Rel
 
 %build
 autoreconf
-%configure --disable-static
+%configure
 make
 
 %install
@@ -35,5 +35,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/httpd/modules/mod_auth_openidc.so
 
 %changelog
+* Thu Aug 14 2014 Hiroyuki Wada <wadahiro@gmail.com> 1.5.4-1
+- Release 1.5.4.
+
 * Sat Jul 26 2014 Hiroyuki Wada <wadahiro@gmail.com> 1.5.2-1
 - Initial packaging for CentOS6/RHEL6.
