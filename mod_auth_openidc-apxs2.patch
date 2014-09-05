@@ -1,0 +1,43 @@
+diff -up ./configure.ac.apxs2 ./configure.ac
+--- ./configure.ac.apxs2	2014-08-29 12:50:11.306639068 -0500
++++ ./configure.ac	2014-08-29 12:50:30.137027081 -0500
+@@ -40,6 +40,9 @@ fi
+ # Replace any occurrences of @APXS2@ with the value of $APXS2 in the Makefile.
+ AC_SUBST(APXS2)
+ 
++# Use environment varilable APXS2_OPTS to pass params to APXS2 command
++AC_ARG_VAR(APXS2_OPTS, [Additional command line options to pass to apxs2.])
++
+ # We need the curl library for HTTP callouts.
+ PKG_CHECK_MODULES(CURL, libcurl)
+ AC_SUBST(CURL_CFLAGS)
+diff -up ./Makefile.in.apxs2 ./Makefile.in
+--- ./Makefile.in.apxs2	2014-08-29 12:50:19.574808976 -0500
++++ ./Makefile.in	2014-08-29 12:50:38.015189759 -0500
+@@ -48,7 +48,7 @@ DISTFILES=$(SRC) \
+ all: src/mod_auth_openidc.la
+ 
+ src/mod_auth_openidc.la: $(SRC) $(HDRS)
+-	@APXS2@ -Wc,"@OPENSSL_CFLAGS@ @CURL_CFLAGS@ @JANSSON_CFLAGS@" -Wl,"@OPENSSL_LIBS@ @CURL_LIBS@ @JANSSON_LIBS@" -Wc,-Wall -Wc,-g -c $(SRC)
++	@APXS2@ @APXS2_OPTS@ -Wc,"@OPENSSL_CFLAGS@ @CURL_CFLAGS@ @JANSSON_CFLAGS@" -Wl,"@OPENSSL_LIBS@ @CURL_LIBS@ @JANSSON_LIBS@" -Wc,-Wall -Wc,-g -c $(SRC)
+ 
+ 
+ # Building configure (for distribution)
+@@ -59,7 +59,7 @@ configure:	configure.ac
+ 	tar -c --transform="s#^#@NAMEVER@/#" -vzf $@ $(DISTFILES)
+ 
+ test/test: test/*.c $(JWT_SRC) $(JWT_HDRS)
+-	`@APXS2@ -q CC` @OPENSSL_CFLAGS@ @APR_CFLAGS@ @JANSSON_CFLAGS@ -Isrc -o $@ test/*.c $(JWT_SRC) @APR_LIBS@ @OPENSSL_LIBS@ @JANSSON_LIBS@
++	`@APXS2@ @APXS2_OPTS@ -q CC` @OPENSSL_CFLAGS@ @APR_CFLAGS@ @JANSSON_CFLAGS@ -Isrc -o $@ test/*.c $(JWT_SRC) @APR_LIBS@ @OPENSSL_LIBS@ @JANSSON_LIBS@
+ 
+ test-compile: test/test
+ 
+@@ -68,7 +68,7 @@ test: test-compile
+ 
+ .PHONY:	install
+ install: src/mod_auth_openidc.la
+-	@APXS2@ -i -n mod_auth_openidc src/mod_auth_openidc.la
++	@APXS2@ @APXS2_OPTS@ -i -n mod_auth_openidc src/mod_auth_openidc.la
+ 
+ .PHONY: distfile
+ distfile:	@NAMEVER@.tar.gz

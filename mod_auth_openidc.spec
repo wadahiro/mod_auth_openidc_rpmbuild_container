@@ -1,5 +1,5 @@
 Name:		mod_auth_openidc
-Version:	1.5.4
+Version:	1.5.5
 Release:	1%{?dist}
 Summary:	Authentication/Authorization module for the Apache 2.x HTTP server that allows users to authenticate using an OpenID Connect enabled Identity Provider
 
@@ -7,6 +7,8 @@ Group:		Networking/Daemons/HTTP
 License:	Apache License Version 2.0
 URL:		https://github.com/pingidentity/mod_auth_openidc
 Source0:        mod_auth_openidc-%{version}.tar.gz
+
+Patch1: mod_auth_openidc-apxs2.patch
 
 Requires:       httpd, openssl, curl, jansson
 BuildRequires:	httpd-devel, openssl-devel, curl-devel, jansson-devel
@@ -16,16 +18,18 @@ This module enables an Apache 2.x web server to operate as an OpenID Connect Rel
 
 %prep
 %setup -q
+%patch1 -p0 -b .apxs2
 
 %build
+export APXS2_OPTS="-S LIBEXECDIR=$RPM_BUILD_ROOT%{_libdir}/httpd/modules/" 
 autoreconf
 %configure
 make
 
 %install
-make install
 mkdir -p $RPM_BUILD_ROOT%{_libdir}/httpd/modules/
-mv %{_libdir}/httpd/modules/mod_auth_openidc.so $RPM_BUILD_ROOT%{_libdir}/httpd/modules/
+make install
+# mv %{_libdir}/httpd/modules/mod_auth_openidc.so $RPM_BUILD_ROOT%{_libdir}/httpd/modules/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -35,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/httpd/modules/mod_auth_openidc.so
 
 %changelog
+* Fri Aug 29 2014 Terry Fleury <terrencegf@gmail.com> 1.5.5-1
+- Release 1.5.5.
+
 * Thu Aug 14 2014 Hiroyuki Wada <wadahiro@gmail.com> 1.5.4-1
 - Release 1.5.4.
 
