@@ -1,7 +1,6 @@
-diff -up ./configure.ac.apxs2 ./configure.ac
---- ./configure.ac.apxs2	2014-08-29 12:50:11.306639068 -0500
-+++ ./configure.ac	2014-08-29 12:50:30.137027081 -0500
-@@ -40,6 +40,9 @@ fi
+--- configure.ac.org	2014-11-05 12:11:56.000000000 +0100
++++ configure.ac	2014-11-06 09:50:43.000000000 +0100
+@@ -40,6 +40,9 @@
  # Replace any occurrences of @APXS2@ with the value of $APXS2 in the Makefile.
  AC_SUBST(APXS2)
  
@@ -11,19 +10,18 @@ diff -up ./configure.ac.apxs2 ./configure.ac
  # We need the curl library for HTTP callouts.
  PKG_CHECK_MODULES(CURL, libcurl)
  AC_SUBST(CURL_CFLAGS)
-diff -up ./Makefile.in.apxs2 ./Makefile.in
---- ./Makefile.in.apxs2	2014-08-29 12:50:19.574808976 -0500
-+++ ./Makefile.in	2014-08-29 12:50:38.015189759 -0500
-@@ -48,7 +48,7 @@ DISTFILES=$(SRC) \
- all: src/mod_auth_openidc.la
+--- Makefile.in.org	2014-11-05 12:11:56.000000000 +0100
++++ Makefile.in	2014-11-06 09:53:36.000000000 +0100
+@@ -53,7 +53,7 @@
+ REDIS_LIBS=@HIREDIS_LIBS@
  
  src/mod_auth_openidc.la: $(SRC) $(HDRS)
--	@APXS2@ -Wc,"@OPENSSL_CFLAGS@ @CURL_CFLAGS@ @JANSSON_CFLAGS@" -Wl,"@OPENSSL_LIBS@ @CURL_LIBS@ @JANSSON_LIBS@" -Wc,-Wall -Wc,-g -c $(SRC)
-+	@APXS2@ @APXS2_OPTS@ -Wc,"@OPENSSL_CFLAGS@ @CURL_CFLAGS@ @JANSSON_CFLAGS@" -Wl,"@OPENSSL_LIBS@ @CURL_LIBS@ @JANSSON_LIBS@" -Wc,-Wall -Wc,-g -c $(SRC)
+-	@APXS2@ -Wc,"-DNAMEVER=\"@NAMEVER@\" @OPENSSL_CFLAGS@ @CURL_CFLAGS@ @JANSSON_CFLAGS@ @PCRE_CFLAGS@ $(REDIS_CFLAGS)" -Wl,"@OPENSSL_LIBS@ @CURL_LIBS@ @JANSSON_LIBS@ @PCRE_LIBS@ $(REDIS_LIBS)" -Wc,-Wall -Wc,-g -c $(SRC)
++	@APXS2@ @APXS2_OPTS@ -Wc,"-DNAMEVER=\"@NAMEVER@\" @OPENSSL_CFLAGS@ @CURL_CFLAGS@ @JANSSON_CFLAGS@ @PCRE_CFLAGS@ $(REDIS_CFLAGS)"  -Wl,"@OPENSSL_LIBS@ @CURL_LIBS@ @JANSSON_LIBS@ @PCRE_LIBS@ $(REDIS_LIBS)" -Wc,-Wall -Wc,-g -c $(SRC)
  
  
  # Building configure (for distribution)
-@@ -59,7 +59,7 @@ configure:	configure.ac
+@@ -64,7 +64,7 @@
  	tar -c --transform="s#^#@NAMEVER@/#" -vzf $@ $(DISTFILES)
  
  test/test: test/*.c $(JWT_SRC) $(JWT_HDRS)
@@ -32,7 +30,7 @@ diff -up ./Makefile.in.apxs2 ./Makefile.in
  
  test-compile: test/test
  
-@@ -68,7 +68,7 @@ test: test-compile
+@@ -73,7 +73,7 @@
  
  .PHONY:	install
  install: src/mod_auth_openidc.la
