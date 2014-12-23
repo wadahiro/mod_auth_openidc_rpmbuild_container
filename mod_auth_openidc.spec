@@ -1,5 +1,5 @@
 Name:		mod_auth_openidc
-Version:	1.7.0
+Version:	1.7.1
 Release:	1%{?dist}
 Summary:	Authentication/Authorization module for the Apache 2.x HTTP server that allows users to authenticate using an OpenID Connect enabled Identity Provider
 
@@ -10,7 +10,7 @@ Source0:        mod_auth_openidc-%{version}.tar.gz
 
 Patch1: mod_auth_openidc-apxs2.patch
 
-Requires:       httpd, openssl, curl, jansson, redis, pcre
+Requires:       httpd, openssl, curl, jansson, hiredis, pcre
 BuildRequires:	httpd-devel, openssl-devel, curl-devel, jansson-devel, hiredis-devel, pcre-devel
 
 %description
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/httpd/modules/mod_auth_openidc.so
 
 %changelog
+* Fri Dec 12 2014 Hans Zandbelt <hzandbelt@pingidentity.com> 1.7.1-1
+- Release 1.7.1.
+
 * Thu Nov 6 2014 Hans Zandbelt <hzandbelt@pingidentity.com> 1.7.0-1
 - Release 1.7.0.
 
